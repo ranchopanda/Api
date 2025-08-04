@@ -58,7 +58,7 @@ app.use(helmet({
 // Compression middleware
 app.use(compression());
 
-// CORS configuration
+// CORS configuration - FUTURE PROOF SOLUTION
 const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -69,34 +69,45 @@ const corsOptions = {
       return callback(null, true);
     }
     
-    // In production, allow specific domains
+    // In production, use dynamic CORS handling
     const allowedOrigins = [
+      // Legacy domains (for backward compatibility)
       'https://apinew4aug-p1vjd72zr-ranchopandas-projects.vercel.app',
       'https://apinew4aug-18met8g4f-ranchopandas-projects.vercel.app',
       'https://apinew4aug-hqa00jg4b-ranchopandas-projects.vercel.app',
-      'https://apinew4aug-p5ihzqbvo-ranchopandas-projects.vercel.app'
+      'https://apinew4aug-p5ihzqbvo-ranchopandas-projects.vercel.app',
+      'https://apinew4aug-mh0l32eph-ranchopandas-projects.vercel.app'
     ];
     
-    // Also allow the FRONTEND_URL environment variable if set
+    // Add FRONTEND_URL from environment variable
     if (process.env.FRONTEND_URL) {
       allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
     }
     
-    // Log for debugging
-    console.log('CORS check - Origin:', origin);
-    console.log('CORS check - Allowed origins:', allowedOrigins);
-    console.log('CORS check - FRONTEND_URL:', process.env.FRONTEND_URL);
-    
-    if (allowedOrigins.includes(origin)) {
-      console.log('CORS allowed origin:', origin);
-      callback(null, true);
-    } else {
-      console.log('CORS blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
+    // DYNAMIC SOLUTION: Allow any Vercel domain for this project
+    const vercelDomainPattern = /^https:\/\/apinew4aug-[a-zA-Z0-9]+-ranchopandas-projects\.vercel\.app$/;
+    if (vercelDomainPattern.test(origin)) {
+      console.log('CORS: Allowing Vercel domain:', origin);
+      return callback(null, true);
     }
+    
+    // Check against static allowed origins
+    if (allowedOrigins.includes(origin)) {
+      console.log('CORS: Allowing static domain:', origin);
+      return callback(null, true);
+    }
+    
+    // Log blocked origins for debugging
+    console.log('CORS: Blocked origin:', origin);
+    console.log('CORS: Allowed origins:', allowedOrigins);
+    console.log('CORS: FRONTEND_URL:', process.env.FRONTEND_URL);
+    
+    callback(new Error('Not allowed by CORS'));
   },
   optionsSuccessStatus: 200,
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
 };
 app.use(cors(corsOptions));
 

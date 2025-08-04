@@ -1,18 +1,12 @@
-// Bulletproof configuration utility - NO environment variable dependency
+// BULLETPROOF configuration utility - NO environment variable dependency
 export const getApiBaseUrl = (): string => {
-  // Try to get from environment variable first
-  const envUrl = import.meta.env?.VITE_API_BASE_URL;
-  
-  // If environment variable is set and not empty, use it
-  if (envUrl && envUrl.trim() !== '') {
-    return envUrl;
-  }
-  
-  // Always return the Render backend URL as fallback - NO environment variable dependency
+  // ALWAYS return the Render backend URL - NO environment variable dependency
+  // This ensures the frontend always works regardless of deployment domain
   return 'https://plant-saathi-api.onrender.com/api';
 };
 
 // Global configuration - NO environment variable checks
 if (typeof window !== 'undefined') {
-  console.log('API Base URL configured:', getApiBaseUrl());
+  console.log('🌱 Plant Saathi AI - API Base URL configured:', getApiBaseUrl());
+  console.log('🌱 Frontend URL:', window.location.origin);
 } 
