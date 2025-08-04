@@ -12,6 +12,8 @@ const s3 = new AWS.S3({
   accessKeyId: process.env.R2_ACCESS_KEY_ID,
   secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
   signatureVersion: 'v4',
+  s3ForcePathStyle: true, // Required for R2
+  region: 'us-east-1', // Default region for R2
 });
 
 // Configure multer for file uploads
