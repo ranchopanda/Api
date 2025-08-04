@@ -1,118 +1,62 @@
-# Frontend Setup for Free Backend
+# Frontend Setup Guide
 
-## Step 1: Update Environment Variables
+## 🚀 Fix the "Error saving company: Unknown error" Issue
 
-Replace the Supabase environment variables in your `.env` file:
+The error you're seeing is because your Vercel frontend doesn't have the correct environment variable set to connect to your Render backend.
 
-```bash
-# Remove these
-# VITE_SUPABASE_URL=your_supabase_url
-# VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+## 🔧 Solution: Set Environment Variable in Vercel
 
-# Add these instead
-VITE_API_BASE_URL=https://your-railway-app.railway.app/api
-VITE_ADMIN_EMAIL=admin@plantdisease.com
-VITE_ADMIN_PASSWORD=admin123
-```
+### **Step 1: Go to Vercel Dashboard**
+1. Visit [Vercel Dashboard](https://vercel.com/dashboard)
+2. Find your project: `apinew4aug-p1vjd72zr-ranchopandas-projects`
+3. Click on the project
 
-## Step 2: Update API Calls
+### **Step 2: Add Environment Variable**
+1. Go to **Settings** tab
+2. Click on **Environment Variables**
+3. Add a new environment variable:
 
-Replace all Supabase function calls with your new API endpoints:
+**Name**: `VITE_API_BASE_URL`  
+**Value**: `https://plant-saathi-api.onrender.com/api`  
+**Environment**: Production (and Preview if you want)
 
-### Before (Supabase):
+### **Step 3: Redeploy**
+1. After adding the environment variable, click **Redeploy**
+2. Or push a new commit to trigger automatic deployment
+
+## 🎯 What This Fixes
+
+- ✅ **Company Creation**: Will work properly
+- ✅ **Company Management**: All CRUD operations
+- ✅ **Usage Analytics**: Will load data correctly
+- ✅ **API Testing**: Will connect to your backend
+- ✅ **Complaints Management**: Will work properly
+
+## 🔍 Alternative: Hardcoded Fallback
+
+If you can't set the environment variable, the frontend now has a fallback:
+
 ```javascript
-const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-disease`, {
-  headers: {
-    'x-api-key': apiKey,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data)
-});
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
 ```
 
-### After (Express.js):
-```javascript
-const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/analyze-disease`, {
-  headers: {
-    'x-api-key': apiKey,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data)
-});
-```
+This means it will work even without the environment variable, but it's better to set it properly.
 
-## Step 3: Update Component Files
+## 📊 Test Your Fix
 
-### CompaniesManagement.tsx
-Replace all API calls:
-```javascript
-// Old
-const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management`);
+After setting the environment variable and redeploying:
 
-// New
-const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies`);
-```
+1. **Go to your frontend**: https://apinew4aug-p1vjd72zr-ranchopandas-projects.vercel.app/
+2. **Try creating a company**: Should work without errors
+3. **Check all features**: Companies, Analytics, API Testing
 
-### APITester.tsx
-Replace API calls:
-```javascript
-// Old
-const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-disease`);
+## 🎉 Expected Result
 
-// New
-const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/analyze-disease`);
-```
+- ✅ No more "Unknown error" messages
+- ✅ Company creation works smoothly
+- ✅ All API calls connect to your Render backend
+- ✅ Full functionality restored
 
-### UsageAnalytics.tsx
-Replace API calls:
-```javascript
-// Old
-const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/usage-tracking`);
+---
 
-// New
-const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/usage-tracking`);
-```
-
-### ComplaintsManagement.tsx
-Replace API calls:
-```javascript
-// Old
-const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/complaints-management`);
-
-// New
-const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/complaints`);
-```
-
-## Step 4: Deploy Frontend to Vercel
-
-1. **Install Vercel CLI**:
-```bash
-npm install -g vercel
-```
-
-2. **Deploy**:
-```bash
-vercel --prod
-```
-
-3. **Set environment variables** in Vercel dashboard:
-   - `VITE_API_BASE_URL`
-   - `VITE_ADMIN_EMAIL`
-   - `VITE_ADMIN_PASSWORD`
-
-## Step 5: Test the Setup
-
-1. **Test API endpoint**:
-```bash
-curl -X POST "https://your-railway-app.railway.app/api/analyze-disease" \
-  -H "Content-Type: application/json" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -d '{
-    "image": "data:image/jpeg;base64,test",
-    "crop": "tomato"
-  }'
-```
-
-2. **Test admin dashboard** at your Vercel URL
-3. **Create a test company** with a valid Gemini API key
-4. **Test the complete flow** with a real plant image 
+**Your Plant Saathi AI application will be fully functional once this environment variable is set!** 🌱✨ 
