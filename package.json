@@ -19,7 +19,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+<<<<<<< HEAD
     "@types/node": "^24.1.0",
+=======
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",

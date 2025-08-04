@@ -32,10 +32,10 @@ services:
       - key: PORT
         value: 10000
     autoDeploy: true
-    plan: starter
+    plan: free
 
 databases:
   - name: plant-saathi-db
     databaseName: plant_saathi
     user: plant_saathi_user
-    plan: starter
+    plan: free

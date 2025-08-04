@@ -30,7 +30,11 @@ function App() {
       case 'complaints':
         return <ComplaintsManagement />;
       case 'api-tester':
+<<<<<<< HEAD
         return <APITester apiKey="75ac51703064e7ef1e31609d6e585306a397eb528b5950f4377c16ebd1d1bfa8" />;
+=======
+        return <APITester apiKey="3caf1c96b196ca1ff9967c63fe2aed2a9708d9d59febd3851a151e15ff168aca" />;
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
       case 'settings':
         return (
           <div className="bg-white rounded-lg shadow-md p-6">

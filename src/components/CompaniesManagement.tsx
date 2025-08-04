@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { Plus, Copy, Edit, Trash2, Building2, Shield, ShieldOff, Calendar, Clock, RefreshCw, Key } from 'lucide-react';
+=======
+import { Plus, Eye, EyeOff, Copy, Edit, Trash2, Building2, Shield, ShieldOff, Calendar, Clock } from 'lucide-react';
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
 
 interface Company {
   id: string;
   name: string;
   email: string;
   api_key_hash: string;
+<<<<<<< HEAD
   api_key?: string;
+=======
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
   daily_limit: number;
   current_usage: number;
   status: 'active' | 'suspended' | 'expired';
@@ -22,7 +29,11 @@ export default function CompaniesManagement() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
+<<<<<<< HEAD
 
+=======
+  const [visibleApiKeys, setVisibleApiKeys] = useState<Set<string>>(new Set());
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -35,6 +46,7 @@ export default function CompaniesManagement() {
 
   const fetchCompanies = async () => {
     try {
+<<<<<<< HEAD
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
       if (!apiBaseUrl) {
         throw new Error('VITE_API_BASE_URL is not configured');
@@ -42,6 +54,16 @@ export default function CompaniesManagement() {
       
       const response = await fetch(`${apiBaseUrl}/companies`, {
         headers: {
+=======
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      if (!supabaseUrl) {
+        throw new Error('VITE_SUPABASE_URL is not configured');
+      }
+      
+      const response = await fetch(`${supabaseUrl}/functions/v1/companies-management`, {
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
           'Content-Type': 'application/json',
         },
       });
@@ -66,6 +88,7 @@ export default function CompaniesManagement() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+<<<<<<< HEAD
     
     // Validate required fields
     if (!formData.name || !formData.email) {
@@ -96,16 +119,32 @@ export default function CompaniesManagement() {
         : cleanData;
 
       console.log('Submitting company data:', body);
+=======
+    try {
+      const url = editingCompany 
+        ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management/${editingCompany.id}`
+        : `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management`;
+      
+      const method = editingCompany ? 'PUT' : 'POST';
+      const body = editingCompany 
+        ? { ...formData, id: editingCompany.id }
+        : formData;
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
 
       const response = await fetch(url, {
         method,
         headers: {
+<<<<<<< HEAD
+=======
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
       });
 
       if (!response.ok) {
+<<<<<<< HEAD
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
@@ -113,6 +152,11 @@ export default function CompaniesManagement() {
       const result = await response.json();
       console.log('Company saved successfully:', result);
 
+=======
+        throw new Error('Failed to save company');
+      }
+
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
       await fetchCompanies();
       setShowForm(false);
       setEditingCompany(null);
@@ -135,9 +179,16 @@ export default function CompaniesManagement() {
     if (!confirm('Are you sure you want to delete this company?')) return;
     
     try {
+<<<<<<< HEAD
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies/${id}`, {
         method: 'DELETE',
         headers: {
+=======
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
           'Content-Type': 'application/json',
         },
       });
@@ -158,9 +209,16 @@ export default function CompaniesManagement() {
     if (!confirm(`Are you sure you want to ${action} this API key?`)) return;
 
     try {
+<<<<<<< HEAD
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies/${company.id}`, {
         method: 'PUT',
         headers: {
+=======
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management/${company.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -180,6 +238,7 @@ export default function CompaniesManagement() {
     }
   };
 
+<<<<<<< HEAD
   const handleRegenerateApiKey = async (company: Company) => {
     if (!confirm('Are you sure you want to regenerate the API key? This will invalidate the current key.')) return;
 
@@ -227,6 +286,18 @@ export default function CompaniesManagement() {
 
 
 
+=======
+  const toggleApiKeyVisibility = (companyId: string) => {
+    const newVisible = new Set(visibleApiKeys);
+    if (newVisible.has(companyId)) {
+      newVisible.delete(companyId);
+    } else {
+      newVisible.add(companyId);
+    }
+    setVisibleApiKeys(newVisible);
+  };
+
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     alert('Copied to clipboard!');
@@ -455,6 +526,7 @@ export default function CompaniesManagement() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-2">
                       <code className="text-xs bg-gray-100 px-2 py-1 rounded">
+<<<<<<< HEAD
                         {company.api_key || 'No API key generated'}
                       </code>
 
@@ -462,6 +534,26 @@ export default function CompaniesManagement() {
                         onClick={() => copyToClipboard(company.api_key || 'No API key generated')}
                         className="text-gray-400 hover:text-gray-600"
                         title={company.api_key ? 'Copy API key' : 'No API key to copy'}
+=======
+                        {visibleApiKeys.has(company.id) 
+                          ? company.api_key_hash 
+                          : '••••••••••••••••'
+                        }
+                      </code>
+                      <button
+                        onClick={() => toggleApiKeyVisibility(company.id)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
+                        {visibleApiKeys.has(company.id) ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
+                      <button
+                        onClick={() => copyToClipboard(company.api_key_hash)}
+                        className="text-gray-400 hover:text-gray-600"
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
                       >
                         <Copy className="w-4 h-4" />
                       </button>
@@ -511,6 +603,7 @@ export default function CompaniesManagement() {
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
+<<<<<<< HEAD
                         onClick={() => handleGetApiKey(company)}
                         className="text-blue-600 hover:text-blue-900"
                         title="Get API Key"
@@ -525,6 +618,8 @@ export default function CompaniesManagement() {
                         <RefreshCw className="w-4 h-4" />
                       </button>
                       <button
+=======
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
                         onClick={() => handleRevokeToggle(company)}
                         className={`${company.api_key_revoked ? 'text-green-600 hover:text-green-900' : 'text-orange-600 hover:text-orange-900'}`}
                         title={company.api_key_revoked ? 'Reactivate API Key' : 'Revoke API Key'}

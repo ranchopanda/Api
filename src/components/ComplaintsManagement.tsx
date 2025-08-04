@@ -24,9 +24,15 @@ const ComplaintsManagement: React.FC = () => {
 
   const fetchComplaints = async () => {
     try {
+<<<<<<< HEAD
             const url = statusFilter === 'all'
         ? `${import.meta.env.VITE_API_BASE_URL}/complaints`
         : `${import.meta.env.VITE_API_BASE_URL}/complaints?status=${statusFilter}`;
+=======
+      const url = statusFilter === 'all' 
+        ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/complaints-management`
+        : `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/complaints-management?status=${statusFilter}`;
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
       
       const response = await fetch(url);
       const data = await response.json();
@@ -45,7 +51,11 @@ const ComplaintsManagement: React.FC = () => {
 
   const handleUpdateComplaint = async (complaintId: string, updates: Partial<Complaint>) => {
     try {
+<<<<<<< HEAD
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/complaints/${complaintId}`, {
+=======
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/complaints-management/${complaintId}`, {
+>>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
