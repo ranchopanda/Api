@@ -317,19 +317,30 @@ router.post('/', upload.single('image'), async (req, res) => {
         [new Date().toISOString(), company.id]
       );
 
-      // Upload image to R2
-      const imageBuffer = Buffer.from(processedImageData, 'base64');
-      const imageName = `${company.id}/${Date.now()}.jpg`;
-      const uploadParams = {
-        Bucket: process.env.R2_BUCKET_NAME,
-        Key: imageName,
-        Body: imageBuffer,
-        ContentType: 'image/jpeg',
-      };
-      const uploadResult = await s3.upload(uploadParams).promise();
-      const imageUrl = uploadResult.Location;
+      // Upload image to R2 (optional - skip if not configured)
+      let imageUrl = null;
+      if (process.env.R2_BUCKET_NAME && process.env.R2_ACCESS_KEY_ID && process.env.R2_SECRET_ACCESS_KEY) {
+        try {
+          const imageBuffer = Buffer.from(processedImageData, 'base64');
+          const imageName = `${company.id}/${Date.now()}.jpg`;
+          const uploadParams = {
+            Bucket: process.env.R2_BUCKET_NAME,
+            Key: imageName,
+            Body: imageBuffer,
+            ContentType: 'image/jpeg',
+          };
+          const uploadResult = await s3.upload(uploadParams).promise();
+          imageUrl = uploadResult.Location;
+          console.log('Image uploaded to R2:', imageUrl);
+        } catch (uploadError) {
+          console.error('R2 upload failed:', uploadError.message);
+          // Continue without image upload
+        }
+      } else {
+        console.log('R2 not configured, skipping image upload');
+      }
 
-      // Save analysis to database
+      // Save analysis to database (with or without image URL)
       await global.pool.query(
         'INSERT INTO analysis_requests (company_id, image_url, analysis_result) VALUES ($1, $2, $3)',
         [company.id, imageUrl, JSON.stringify(analysisResult)]
