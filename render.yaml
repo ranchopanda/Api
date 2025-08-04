@@ -31,8 +31,9 @@ services:
 
   - type: cron
     name: daily-usage-reset
+    env: bash
     schedule: "0 0 * * *"
-    command: ./cron.sh
+    command: ./backend/cron.sh
 
 databases:
   - name: plant-saathi-db
