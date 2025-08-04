@@ -3,7 +3,7 @@ services:
     name: plant-saathi-backend
     env: node
     rootDir: backend
-    buildCommand: npm install
+    buildCommand: npm install && chmod +x cron.sh
     startCommand: node server.js
     envVars:
       - key: DATABASE_URL
@@ -32,9 +32,7 @@ services:
   - type: cron
     name: daily-usage-reset
     schedule: "0 0 * * *"
-    command: |
-      curl -X POST https://plant-saathi-backend.onrender.com/api/cron/reset-daily-usage \
-        -H "x-cron-secret: ${CRON_SECRET}"
+    command: ./cron.sh
 
 databases:
   - name: plant-saathi-db
