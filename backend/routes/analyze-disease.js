@@ -252,6 +252,8 @@ router.post('/', upload.single('image'), async (req, res) => {
 
       const response = await result.response;
       const text = response.text();
+      
+      console.log('🔍 Raw Gemini response:', text);
 
       // Parse the JSON response
       let analysisResult;
@@ -322,10 +324,10 @@ router.post('/', upload.single('image'), async (req, res) => {
       // Upload image to R2 (optional - skip if not configured)
       let imageUrl = null;
       console.log('🔧 R2 Configuration check:');
-      console.log('  - R2_BUCKET_NAME:', process.env.R2_BUCKET_NAME ? 'Set' : 'Not set');
-      console.log('  - R2_ACCESS_KEY_ID:', process.env.R2_ACCESS_KEY_ID ? 'Set' : 'Not set');
-      console.log('  - R2_SECRET_ACCESS_KEY:', process.env.R2_SECRET_ACCESS_KEY ? 'Set' : 'Not set');
-      console.log('  - R2_ENDPOINT:', process.env.R2_ENDPOINT ? 'Set' : 'Not set');
+      console.log('  - R2_BUCKET_NAME:', process.env.R2_BUCKET_NAME || 'NOT SET');
+      console.log('  - R2_ACCESS_KEY_ID:', process.env.R2_ACCESS_KEY_ID ? 'SET' : 'NOT SET');
+      console.log('  - R2_SECRET_ACCESS_KEY:', process.env.R2_SECRET_ACCESS_KEY ? 'SET' : 'NOT SET');
+      console.log('  - R2_ENDPOINT:', process.env.R2_ENDPOINT || 'NOT SET');
       
       if (process.env.R2_BUCKET_NAME && process.env.R2_ACCESS_KEY_ID && process.env.R2_SECRET_ACCESS_KEY) {
         try {
