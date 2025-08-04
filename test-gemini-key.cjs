@@ -10,7 +10,7 @@ async function testGeminiKey() {
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     console.log('🤖 Testing simple text generation...');
     
@@ -25,7 +25,7 @@ async function testGeminiKey() {
     // Test image analysis
     console.log('🖼️ Testing image analysis capability...');
     
-    const imageModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const imageModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
     // Create a simple test image (1x1 pixel)
     const testImageData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";

@@ -218,7 +218,7 @@ print(result)`,
   "yield_impact": "Medium",
   "spread_risk": "High",
   "recovery_chance": "Good",
-  "model_version": "gemini-1.5-flash"
+        "model_version": "gemini-2.0-flash"
 }`}</pre>
         </div>
       </div>

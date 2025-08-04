@@ -193,7 +193,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     try {
       // Initialize Gemini AI
       const genAI = new GoogleGenerativeAI(company.gemini_key_encrypted);
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
       // Prepare the comprehensive prompt
       const prompt = `

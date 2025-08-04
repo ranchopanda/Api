@@ -288,7 +288,7 @@ Deno.serve(async (req: Request) => {
     try {
       // Initialize Gemini AI with the company's API key - Using Gemini 2.0 Flash
       const genAI = new GoogleGenerativeAI(company.gemini_key_encrypted)
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' })
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
 
       // Prepare the comprehensive prompt for Plant Saathi AI
       const prompt = `
