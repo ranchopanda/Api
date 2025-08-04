@@ -7,7 +7,7 @@ interface APIDocumentationProps {
 
 const APIDocumentation: React.FC<APIDocumentationProps> = ({ apiKey }) => {
   const [copied, setCopied] = useState<string>('');
-  const baseURL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
+  const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
 
   const copyToClipboard = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
