@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Copy, Edit, Trash2, Building2, Shield, ShieldOff, Calendar, Clock, RefreshCw, Key } from 'lucide-react';
+import { getApiBaseUrl } from '../utils/config';
 
 interface Company {
   id: string;
@@ -34,8 +35,7 @@ export default function CompaniesManagement() {
 
   const fetchCompanies = async () => {
     try {
-      // Use the Render backend URL directly since environment variable might not be set
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       console.log('Fetching companies from:', apiBaseUrl);
       
       const response = await fetch(`${apiBaseUrl}/companies`, {
@@ -77,8 +77,7 @@ export default function CompaniesManagement() {
     }
 
     try {
-      // Use the Render backend URL directly
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       const url = editingCompany 
         ? `${apiBaseUrl}/companies/${editingCompany.id}`
         : `${apiBaseUrl}/companies`;
@@ -143,7 +142,7 @@ export default function CompaniesManagement() {
     }
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       const response = await fetch(`${apiBaseUrl}/companies/${id}`, {
         method: 'DELETE',
         headers: {
@@ -164,7 +163,7 @@ export default function CompaniesManagement() {
 
   const handleToggleStatus = async (company: Company) => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       const newStatus = company.status === 'active' ? 'suspended' : 'active';
       
       const response = await fetch(`${apiBaseUrl}/companies/${company.id}`, {
@@ -192,7 +191,7 @@ export default function CompaniesManagement() {
     }
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       const response = await fetch(`${apiBaseUrl}/companies/${company.id}/regenerate-api-key`, {
         method: 'POST',
         headers: {
@@ -214,7 +213,7 @@ export default function CompaniesManagement() {
 
   const handleViewApiKey = async (company: Company) => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       const response = await fetch(`${apiBaseUrl}/companies/${company.id}/api-key`, {
         headers: {
           'Content-Type': 'application/json',
