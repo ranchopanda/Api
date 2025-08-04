@@ -3,15 +3,14 @@ services:
     name: plant-saathi-backend
     env: node
     rootDir: backend
-    buildCommand: npm install && chmod +x cron.sh
+    buildCommand: npm install
     startCommand: node server.js
+    healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: plant-saathi-db
-          property: connectionString
+        value: postgresql://neondb_owner:npg_D0wZTJ7uqdRr@ep-damp-pine-a83kg2ln-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require
       - key: GOOGLE_GEMINI_API_KEY
-        sync: false
+        value: AIzaSyCIBfxO0ucbAZXYE73P-vvTQFcCjn52y8w
       - key: JWT_SECRET
         sync: false
       - key: CRON_SECRET
@@ -25,11 +24,18 @@ services:
       - key: R2_ENDPOINT
         sync: false
       - key: FRONTEND_URL
-        sync: false
+        value: https://apinew4aug-p1vjd72zr-ranchopandas-projects.vercel.app/
       - key: NODE_ENV
         value: production
+      - key: LOG_LEVEL
+        value: info
+      - key: PORT
+        value: 10000
+    autoDeploy: true
+    plan: starter
 
 databases:
   - name: plant-saathi-db
     databaseName: plant_saathi
     user: plant_saathi_user
+    plan: starter
