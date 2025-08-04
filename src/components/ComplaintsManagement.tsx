@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Clock, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { getApiBaseUrl } from '../utils/config';
 
 interface Complaint {
   id: string;
@@ -24,7 +25,7 @@ const ComplaintsManagement: React.FC = () => {
 
   const fetchComplaints = async () => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       const url = statusFilter === 'all' 
         ? `${apiBaseUrl}/complaints`
         : `${apiBaseUrl}/complaints?status=${statusFilter}`;
@@ -55,7 +56,7 @@ const ComplaintsManagement: React.FC = () => {
 
   const handleUpdateComplaint = async (complaintId: string, updates: Partial<Complaint>) => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       const response = await fetch(`${apiBaseUrl}/complaints/${complaintId}`, {
         method: 'PUT',
         headers: {

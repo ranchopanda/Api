@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Play, Upload, AlertCircle, CheckCircle, Copy, FileImage } from 'lucide-react';
+import { getApiBaseUrl } from '../utils/config';
 
 interface APITesterProps {
   apiKey: string;
@@ -51,7 +52,7 @@ const APITester: React.FC<APITesterProps> = ({ apiKey }) => {
 
       if (uploadMethod === 'base64') {
         // JSON payload with base64 image
-        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+        const apiBaseUrl = getApiBaseUrl();
         response = await fetch(`${apiBaseUrl}/analyze-disease`, {
           method: 'POST',
           headers: {
@@ -73,7 +74,7 @@ const APITester: React.FC<APITesterProps> = ({ apiKey }) => {
         formData.append('location', location);
         formData.append('symptoms', symptoms);
 
-        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+        const apiBaseUrl = getApiBaseUrl();
         response = await fetch(`${apiBaseUrl}/analyze-disease`, {
           method: 'POST',
           headers: {

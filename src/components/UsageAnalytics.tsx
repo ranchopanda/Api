@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, TrendingUp, DollarSign, Activity, AlertTriangle, Clock, Zap } from 'lucide-react';
+import { getApiBaseUrl } from '../utils/config';
 
 interface UsageStats {
   total_requests: number;
@@ -31,7 +32,7 @@ const UsageAnalytics: React.FC = () => {
 
   const fetchUsageData = async () => {
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const apiBaseUrl = getApiBaseUrl();
       const response = await fetch(`${apiBaseUrl}/usage-tracking?period=${period}`);
       const data = await response.json();
       setStats(data.stats || { 
