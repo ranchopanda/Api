@@ -73,7 +73,8 @@ const corsOptions = {
     const allowedOrigins = [
       'https://apinew4aug-p1vjd72zr-ranchopandas-projects.vercel.app',
       'https://apinew4aug-18met8g4f-ranchopandas-projects.vercel.app',
-      'https://apinew4aug-hqa00jg4b-ranchopandas-projects.vercel.app'
+      'https://apinew4aug-hqa00jg4b-ranchopandas-projects.vercel.app',
+      'https://apinew4aug-p5ihzqbvo-ranchopandas-projects.vercel.app'
     ];
     
     // Also allow the FRONTEND_URL environment variable if set
@@ -81,7 +82,13 @@ const corsOptions = {
       allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
     }
     
+    // Log for debugging
+    console.log('CORS check - Origin:', origin);
+    console.log('CORS check - Allowed origins:', allowedOrigins);
+    console.log('CORS check - FRONTEND_URL:', process.env.FRONTEND_URL);
+    
     if (allowedOrigins.includes(origin)) {
+      console.log('CORS allowed origin:', origin);
       callback(null, true);
     } else {
       console.log('CORS blocked origin:', origin);
