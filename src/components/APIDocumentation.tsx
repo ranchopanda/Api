@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Code, Key, Database, AlertTriangle, Copy, CheckCircle } from 'lucide-react';
+import { getApiBaseUrl } from '../utils/config';
 
 interface APIDocumentationProps {
   apiKey: string;
@@ -7,7 +8,7 @@ interface APIDocumentationProps {
 
 const APIDocumentation: React.FC<APIDocumentationProps> = ({ apiKey }) => {
   const [copied, setCopied] = useState<string>('');
-  const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+  const baseURL = getApiBaseUrl();
 
   const copyToClipboard = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
