@@ -16,13 +16,13 @@ services:
       - key: CRON_SECRET
         generateValue: true
       - key: R2_ACCESS_KEY_ID
-        sync: false
+        value: 0e19f3ce11fba98f0fcce3ec137f317b
       - key: R2_SECRET_ACCESS_KEY
-        sync: false
+        value: 526bd60c0f0376987089d649b65adea59c06df7de875b7f3e14d2fbd5a89a6a0
       - key: R2_BUCKET_NAME
-        sync: false
+        value: plant-saathi-images
       - key: R2_ENDPOINT
-        sync: false
+        value: https://caa64cf48dab43496ce7ad739499a069.r2.cloudflarestorage.com
       - key: FRONTEND_URL
         value: https://apinew4aug-p5ihzqbvo-ranchopandas-projects.vercel.app/
       - key: NODE_ENV
