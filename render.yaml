@@ -32,7 +32,7 @@ services:
   - type: cron
     name: daily-usage-reset
     schedule: "0 0 * * *"
-    command: curl -X POST https://plant-saathi-backend.onrender.com/api/cron/reset-daily-usage -H "x-cron-secret: ${CRON_SECRET}"
+    command: "curl -X POST https://plant-saathi-backend.onrender.com/api/cron/reset-daily-usage -H \"x-cron-secret: ${CRON_SECRET}\""
 
 databases:
   - name: plant-saathi-db
