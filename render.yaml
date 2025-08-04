@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: plant-saathi-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: plant-saathi-db
+          property: connectionString
+      - key: GOOGLE_GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CRON_SECRET
+        generateValue: true
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET_NAME
+        sync: false
+      - key: R2_ENDPOINT
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: NODE_ENV
+        value: production
+
+  - type: cron
+    name: daily-usage-reset
+    schedule: "0 0 * * *"
+    command: curl -X POST https://plant-saathi-backend.onrender.com/api/cron/reset-daily-usage -H "x-cron-secret: ${CRON_SECRET}"
+
+databases:
+  - name: plant-saathi-db
+    databaseName: plant_saathi
+    user: plant_saathi_user
