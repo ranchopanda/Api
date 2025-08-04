@@ -51,11 +51,8 @@ const APITester: React.FC<APITesterProps> = ({ apiKey }) => {
 
       if (uploadMethod === 'base64') {
         // JSON payload with base64 image
-<<<<<<< HEAD
-        response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/analyze-disease`, {
-=======
-        response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-disease`, {
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+        response = await fetch(`${apiBaseUrl}/analyze-disease`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -76,11 +73,8 @@ const APITester: React.FC<APITesterProps> = ({ apiKey }) => {
         formData.append('location', location);
         formData.append('symptoms', symptoms);
 
-<<<<<<< HEAD
-        response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/analyze-disease`, {
-=======
-        response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-disease`, {
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+        response = await fetch(`${apiBaseUrl}/analyze-disease`, {
           method: 'POST',
           headers: {
             'x-api-key': apiKey
@@ -120,7 +114,6 @@ const APITester: React.FC<APITesterProps> = ({ apiKey }) => {
           </div>
         </div>
         
-<<<<<<< HEAD
         {/* API Key Info */}
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
           <div className="flex items-start space-x-3">
@@ -137,8 +130,6 @@ const APITester: React.FC<APITesterProps> = ({ apiKey }) => {
           </div>
         </div>
         
-=======
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
         {/* Upload Method Selection */}
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-3">

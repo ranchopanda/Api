@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import { Plus, Copy, Edit, Trash2, Building2, Shield, ShieldOff, Calendar, Clock, RefreshCw, Key } from 'lucide-react';
-=======
-import { Plus, Eye, EyeOff, Copy, Edit, Trash2, Building2, Shield, ShieldOff, Calendar, Clock } from 'lucide-react';
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
 
 interface Company {
   id: string;
   name: string;
   email: string;
   api_key_hash: string;
-<<<<<<< HEAD
   api_key?: string;
-=======
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
   daily_limit: number;
   current_usage: number;
   status: 'active' | 'suspended' | 'expired';
@@ -29,11 +22,6 @@ export default function CompaniesManagement() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
-<<<<<<< HEAD
-
-=======
-  const [visibleApiKeys, setVisibleApiKeys] = useState<Set<string>>(new Set());
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -41,29 +29,16 @@ export default function CompaniesManagement() {
     daily_limit: 100,
     cost_per_extra_call: 0.10,
     rate_limit_per_minute: 60,
-    expiry_date: ''
+    expiry_date: '' as string | undefined
   });
 
   const fetchCompanies = async () => {
     try {
-<<<<<<< HEAD
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      if (!apiBaseUrl) {
-        throw new Error('VITE_API_BASE_URL is not configured');
-      }
+      // Use the Render backend URL directly since environment variable might not be set
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
       
       const response = await fetch(`${apiBaseUrl}/companies`, {
         headers: {
-=======
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      if (!supabaseUrl) {
-        throw new Error('VITE_SUPABASE_URL is not configured');
-      }
-      
-      const response = await fetch(`${supabaseUrl}/functions/v1/companies-management`, {
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
           'Content-Type': 'application/json',
         },
       });
@@ -88,7 +63,6 @@ export default function CompaniesManagement() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
     
     // Validate required fields
     if (!formData.name || !formData.email) {
@@ -102,16 +76,18 @@ export default function CompaniesManagement() {
     }
 
     try {
+      // Use the Render backend URL directly
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
       const url = editingCompany 
-        ? `${import.meta.env.VITE_API_BASE_URL}/companies/${editingCompany.id}`
-        : `${import.meta.env.VITE_API_BASE_URL}/companies`;
+        ? `${apiBaseUrl}/companies/${editingCompany.id}`
+        : `${apiBaseUrl}/companies`;
       
       const method = editingCompany ? 'PUT' : 'POST';
       
       // Clean up the data before sending
       const cleanData = { ...formData };
       if (!cleanData.expiry_date || cleanData.expiry_date.trim() === '') {
-        delete cleanData.expiry_date;
+        cleanData.expiry_date = undefined;
       }
       
       const body = editingCompany 
@@ -119,32 +95,16 @@ export default function CompaniesManagement() {
         : cleanData;
 
       console.log('Submitting company data:', body);
-=======
-    try {
-      const url = editingCompany 
-        ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management/${editingCompany.id}`
-        : `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management`;
-      
-      const method = editingCompany ? 'PUT' : 'POST';
-      const body = editingCompany 
-        ? { ...formData, id: editingCompany.id }
-        : formData;
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
 
       const response = await fetch(url, {
         method,
         headers: {
-<<<<<<< HEAD
-=======
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
       });
 
       if (!response.ok) {
-<<<<<<< HEAD
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
@@ -152,11 +112,6 @@ export default function CompaniesManagement() {
       const result = await response.json();
       console.log('Company saved successfully:', result);
 
-=======
-        throw new Error('Failed to save company');
-      }
-
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
       await fetchCompanies();
       setShowForm(false);
       setEditingCompany(null);
@@ -176,19 +131,15 @@ export default function CompaniesManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this company?')) return;
-    
+    if (!confirm('Are you sure you want to delete this company?')) {
+      return;
+    }
+
     try {
-<<<<<<< HEAD
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies/${id}`, {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const response = await fetch(`${apiBaseUrl}/companies/${id}`, {
         method: 'DELETE',
         headers: {
-=======
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
           'Content-Type': 'application/json',
         },
       });
@@ -204,46 +155,38 @@ export default function CompaniesManagement() {
     }
   };
 
-  const handleRevokeToggle = async (company: Company) => {
-    const action = company.api_key_revoked ? 'reactivate' : 'revoke';
-    if (!confirm(`Are you sure you want to ${action} this API key?`)) return;
-
+  const handleToggleStatus = async (company: Company) => {
     try {
-<<<<<<< HEAD
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies/${company.id}`, {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const newStatus = company.status === 'active' ? 'suspended' : 'active';
+      
+      const response = await fetch(`${apiBaseUrl}/companies/${company.id}`, {
         method: 'PUT',
         headers: {
-=======
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/companies-management/${company.id}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...company,
-          api_key_revoked: !company.api_key_revoked
-        }),
+        body: JSON.stringify({ ...company, status: newStatus }),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to ${action} API key`);
+        throw new Error('Failed to update company status');
       }
 
       await fetchCompanies();
     } catch (error) {
-      console.error(`Error ${action}ing API key:`, error);
-      alert(`Error ${action}ing API key: ` + (error as Error).message);
+      console.error('Error updating company status:', error);
+      alert('Error updating company status: ' + (error as Error).message);
     }
   };
 
-<<<<<<< HEAD
   const handleRegenerateApiKey = async (company: Company) => {
-    if (!confirm('Are you sure you want to regenerate the API key? This will invalidate the current key.')) return;
+    if (!confirm('Are you sure you want to regenerate the API key? This will invalidate the current key.')) {
+      return;
+    }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies/${company.id}/regenerate-api-key`, {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const response = await fetch(`${apiBaseUrl}/companies/${company.id}/regenerate-api-key`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -254,50 +197,35 @@ export default function CompaniesManagement() {
         throw new Error('Failed to regenerate API key');
       }
 
-      const result = await response.json();
-      alert(`New API key: ${result.api_key}\n\nPlease copy this key as it won't be shown again!`);
       await fetchCompanies();
+      alert('API key regenerated successfully');
     } catch (error) {
       console.error('Error regenerating API key:', error);
       alert('Error regenerating API key: ' + (error as Error).message);
     }
   };
 
-  const handleGetApiKey = async (company: Company) => {
+  const handleViewApiKey = async (company: Company) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies/${company.id}/api-key`, {
-        method: 'GET',
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const response = await fetch(`${apiBaseUrl}/companies/${company.id}/api-key`, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get API key');
+        throw new Error('Failed to fetch API key');
       }
 
-      const result = await response.json();
-      alert(`API key: ${result.api_key}\n\n${result.message}`);
+      const data = await response.json();
+      alert(`API Key: ${data.api_key}`);
     } catch (error) {
-      console.error('Error getting API key:', error);
-      alert('Error getting API key: ' + (error as Error).message);
+      console.error('Error fetching API key:', error);
+      alert('Error fetching API key: ' + (error as Error).message);
     }
   };
 
-
-
-=======
-  const toggleApiKeyVisibility = (companyId: string) => {
-    const newVisible = new Set(visibleApiKeys);
-    if (newVisible.has(companyId)) {
-      newVisible.delete(companyId);
-    } else {
-      newVisible.add(companyId);
-    }
-    setVisibleApiKeys(newVisible);
-  };
-
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     alert('Copied to clipboard!');
@@ -308,7 +236,7 @@ export default function CompaniesManagement() {
     setFormData({
       name: company.name,
       email: company.email,
-      gemini_key: '',
+      gemini_key: '', // Clear gemini_key for editing
       daily_limit: company.daily_limit,
       cost_per_extra_call: company.cost_per_extra_call,
       rate_limit_per_minute: company.rate_limit_per_minute,
@@ -526,34 +454,12 @@ export default function CompaniesManagement() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-2">
                       <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-<<<<<<< HEAD
-                        {company.api_key || 'No API key generated'}
+                        {company.api_key_hash}
                       </code>
-
-                      <button
-                        onClick={() => copyToClipboard(company.api_key || 'No API key generated')}
-                        className="text-gray-400 hover:text-gray-600"
-                        title={company.api_key ? 'Copy API key' : 'No API key to copy'}
-=======
-                        {visibleApiKeys.has(company.id) 
-                          ? company.api_key_hash 
-                          : '••••••••••••••••'
-                        }
-                      </code>
-                      <button
-                        onClick={() => toggleApiKeyVisibility(company.id)}
-                        className="text-gray-400 hover:text-gray-600"
-                      >
-                        {visibleApiKeys.has(company.id) ? (
-                          <EyeOff className="w-4 h-4" />
-                        ) : (
-                          <Eye className="w-4 h-4" />
-                        )}
-                      </button>
                       <button
                         onClick={() => copyToClipboard(company.api_key_hash)}
                         className="text-gray-400 hover:text-gray-600"
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
+                        title="Copy API key"
                       >
                         <Copy className="w-4 h-4" />
                       </button>
@@ -603,10 +509,9 @@ export default function CompaniesManagement() {
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
-<<<<<<< HEAD
-                        onClick={() => handleGetApiKey(company)}
+                        onClick={() => handleViewApiKey(company)}
                         className="text-blue-600 hover:text-blue-900"
-                        title="Get API Key"
+                        title="View API Key"
                       >
                         <Key className="w-4 h-4" />
                       </button>
@@ -618,13 +523,11 @@ export default function CompaniesManagement() {
                         <RefreshCw className="w-4 h-4" />
                       </button>
                       <button
-=======
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
-                        onClick={() => handleRevokeToggle(company)}
-                        className={`${company.api_key_revoked ? 'text-green-600 hover:text-green-900' : 'text-orange-600 hover:text-orange-900'}`}
-                        title={company.api_key_revoked ? 'Reactivate API Key' : 'Revoke API Key'}
+                        onClick={() => handleToggleStatus(company)}
+                        className={`${company.status === 'active' ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'}`}
+                        title={company.status === 'active' ? 'Suspend Company' : 'Activate Company'}
                       >
-                        {company.api_key_revoked ? <Shield className="w-4 h-4" /> : <ShieldOff className="w-4 h-4" />}
+                        {company.status === 'active' ? <ShieldOff className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
                       </button>
                       <button
                         onClick={() => handleDelete(company.id)}

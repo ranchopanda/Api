@@ -24,17 +24,21 @@ const ComplaintsManagement: React.FC = () => {
 
   const fetchComplaints = async () => {
     try {
-<<<<<<< HEAD
-            const url = statusFilter === 'all'
-        ? `${import.meta.env.VITE_API_BASE_URL}/complaints`
-        : `${import.meta.env.VITE_API_BASE_URL}/complaints?status=${statusFilter}`;
-=======
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
       const url = statusFilter === 'all' 
-        ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/complaints-management`
-        : `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/complaints-management?status=${statusFilter}`;
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
+        ? `${apiBaseUrl}/complaints`
+        : `${apiBaseUrl}/complaints?status=${statusFilter}`;
       
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch complaints');
+      }
+      
       const data = await response.json();
       setComplaints(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -51,11 +55,8 @@ const ComplaintsManagement: React.FC = () => {
 
   const handleUpdateComplaint = async (complaintId: string, updates: Partial<Complaint>) => {
     try {
-<<<<<<< HEAD
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/complaints/${complaintId}`, {
-=======
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/complaints-management/${complaintId}`, {
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const response = await fetch(`${apiBaseUrl}/complaints/${complaintId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -63,14 +64,14 @@ const ComplaintsManagement: React.FC = () => {
         body: JSON.stringify(updates),
       });
 
-      if (response.ok) {
-        const updatedComplaint = await response.json();
-        setComplaints(complaints.map(c => c.id === complaintId ? updatedComplaint : c));
-        setSelectedComplaint(null);
-        setResponseText('');
+      if (!response.ok) {
+        throw new Error('Failed to update complaint');
       }
+
+      await fetchComplaints();
     } catch (error) {
       console.error('Error updating complaint:', error);
+      alert('Error updating complaint: ' + (error as Error).message);
     }
   };
 

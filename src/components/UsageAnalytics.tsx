@@ -14,20 +14,12 @@ interface UsageStats {
 
 interface CompanySummary {
   id: string;
-<<<<<<< HEAD
   company_name: string;
   company_email: string;
   daily_limit: number;
   current_usage: number;
   status: string;
   cost_per_extra_call: number;
-=======
-  name: string;
-  email: string;
-  daily_limit: number;
-  current_usage: number;
-  status: string;
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
 }
 
 const UsageAnalytics: React.FC = () => {
@@ -39,11 +31,8 @@ const UsageAnalytics: React.FC = () => {
 
   const fetchUsageData = async () => {
     try {
-<<<<<<< HEAD
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/usage-tracking?period=${period}`);
-=======
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/usage-tracking?period=${period}`);
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      const response = await fetch(`${apiBaseUrl}/usage-tracking?period=${period}`);
       const data = await response.json();
       setStats(data.stats || { 
         total_requests: 0, 
@@ -58,11 +47,7 @@ const UsageAnalytics: React.FC = () => {
       setCompanySummary(data.company_summary || []);
     } catch (error) {
       console.error('Error fetching usage data:', error);
-<<<<<<< HEAD
       setStats({ total_requests: 0, successful_requests: 0, failed_requests: 0, average_response_time: 0, total_cost: 0, logs: [], total_revenue: 0, average_requests_per_company: 0 });
-=======
-      setStats({ total_requests: 0, successful_requests: 0, failed_requests: 0, average_response_time: 0, total_cost: 0, logs: [] });
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
       setCompanySummary([]);
     } finally {
       setLoading(false);
@@ -170,11 +155,7 @@ const UsageAnalytics: React.FC = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-<<<<<<< HEAD
-              <p className="text-2xl font-bold text-gray-900">₹{parseFloat(String(stats?.total_cost || 0)).toFixed(2)}</p>
-=======
               <p className="text-2xl font-bold text-gray-900">${stats?.total_cost.toFixed(2) || '0.00'}</p>
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
             </div>
           </div>
         </div>
@@ -216,13 +197,8 @@ const UsageAnalytics: React.FC = () => {
                   <tr key={company.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-<<<<<<< HEAD
                         <div className="text-sm font-medium text-gray-900">{company.company_name}</div>
                         <div className="text-sm text-gray-500">{company.company_email}</div>
-=======
-                        <div className="text-sm font-medium text-gray-900">{company.name}</div>
-                        <div className="text-sm text-gray-500">{company.email}</div>
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -246,13 +222,8 @@ const UsageAnalytics: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-<<<<<<< HEAD
-                      ₹{((company.current_usage > company.daily_limit ?
-                        (company.current_usage - company.daily_limit) * company.cost_per_extra_call : 0)).toFixed(2)}
-=======
                       ${((company.current_usage > company.daily_limit ? 
                         (company.current_usage - company.daily_limit) * 0.10 : 0)).toFixed(2)}
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -304,11 +275,7 @@ const UsageAnalytics: React.FC = () => {
                     {new Date(log.timestamp).toLocaleString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-<<<<<<< HEAD
                     {log.company_name || 'Unknown'}
-=======
-                    {log.companies?.name || 'Unknown'}
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {log.endpoint}
@@ -333,8 +300,4 @@ const UsageAnalytics: React.FC = () => {
   );
 };
 
-<<<<<<< HEAD
 export default UsageAnalytics;
-=======
-export default UsageAnalytics;
->>>>>>> e6c9b623d37e8e0cb098b126dd0469cfcbde4fcf
