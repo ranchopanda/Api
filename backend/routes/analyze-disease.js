@@ -343,7 +343,7 @@ router.post('/', upload.single('image'), async (req, res) => {
       // Save analysis to database (with or without image URL)
       await global.pool.query(
         'INSERT INTO analysis_requests (company_id, image_url, analysis_result) VALUES ($1, $2, $3)',
-        [company.id, imageUrl, JSON.stringify(analysisResult)]
+        [company.id, imageUrl || null, JSON.stringify(analysisResult)]
       );
 
       // Log successful API usage
