@@ -4,13 +4,17 @@ import App from './App.tsx';
 import './index.css';
 import { getApiBaseUrl } from './utils/config';
 import { setupErrorHandler } from './utils/errorHandler';
+import { setupGlobalOverride } from './utils/globalOverride';
 
-// Bulletproof configuration - NO environment variable dependency
+// Nuclear option: Prevent ANY environment variable validation errors
 if (typeof window !== 'undefined') {
-  // Setup global error handler to prevent any configuration errors
+  // Setup nuclear override to prevent ANY configuration errors
+  setupGlobalOverride();
+  
+  // Setup global error handler as backup
   setupErrorHandler();
   
-  console.log('API Base URL configured:', getApiBaseUrl());
+  console.log('Nuclear override applied - API Base URL configured:', getApiBaseUrl());
 }
 
 createRoot(document.getElementById('root')!).render(
