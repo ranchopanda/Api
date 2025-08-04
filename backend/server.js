@@ -76,7 +76,9 @@ const corsOptions = {
       'https://apinew4aug-18met8g4f-ranchopandas-projects.vercel.app',
       'https://apinew4aug-hqa00jg4b-ranchopandas-projects.vercel.app',
       'https://apinew4aug-p5ihzqbvo-ranchopandas-projects.vercel.app',
-      'https://apinew4aug-mh0l32eph-ranchopandas-projects.vercel.app'
+      'https://apinew4aug-mh0l32eph-ranchopandas-projects.vercel.app',
+      // Current domain
+      'https://apinew4aug.vercel.app'
     ];
     
     // Add FRONTEND_URL from environment variable
@@ -86,7 +88,9 @@ const corsOptions = {
     
     // DYNAMIC SOLUTION: Allow any Vercel domain for this project
     const vercelDomainPattern = /^https:\/\/apinew4aug-[a-zA-Z0-9]+-ranchopandas-projects\.vercel\.app$/;
-    if (vercelDomainPattern.test(origin)) {
+    const vercelAppPattern = /^https:\/\/apinew4aug\.vercel\.app$/;
+    
+    if (vercelDomainPattern.test(origin) || vercelAppPattern.test(origin)) {
       console.log('CORS: Allowing Vercel domain:', origin);
       return callback(null, true);
     }

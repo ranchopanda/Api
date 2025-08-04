@@ -24,7 +24,7 @@ services:
       - key: R2_ENDPOINT
         value: https://caa64cf48dab43496ce7ad739499a069.r2.cloudflarestorage.com
       - key: FRONTEND_URL
-        value: https://apinew4aug-p5ihzqbvo-ranchopandas-projects.vercel.app/
+        value: https://apinew4aug.vercel.app/
       - key: NODE_ENV
         value: production
       - key: LOG_LEVEL
