@@ -80,9 +80,31 @@ router.post('/', upload.single('image'), async (req, res) => {
 
     // Handle different content types
     if (req.headers['content-type']?.includes('application/json')) {
-      // JSON payload with base64 image
+      // JSON payload with base64 image or image URL
       requestData = req.body;
       imageData = requestData.image || null;
+      
+      // Check if it's an image URL instead of base64
+      if (requestData.image_url && !imageData) {
+        try {
+          console.log('📥 Fetching image from URL:', requestData.image_url);
+          const imageResponse = await fetch(requestData.image_url);
+          if (!imageResponse.ok) {
+            throw new Error(`Failed to fetch image: ${imageResponse.status}`);
+          }
+          const imageBuffer = await imageResponse.arrayBuffer();
+          const contentType = imageResponse.headers.get('content-type') || 'image/jpeg';
+          imageData = bufferToBase64(Buffer.from(imageBuffer), contentType);
+          console.log('✅ Image fetched successfully from URL');
+        } catch (error) {
+          console.error('❌ Failed to fetch image from URL:', error.message);
+          return res.status(400).json({
+            error: 'Invalid image URL',
+            message: 'Unable to fetch image from the provided URL. Please check the URL and try again.',
+            branding: 'Powered by Plant Saathi AI'
+          });
+        }
+      }
     } else if (req.file) {
       // Multipart form data with file upload
       imageData = bufferToBase64(req.file.buffer, req.file.mimetype);
@@ -121,7 +143,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     if (!imageData) {
       return res.status(400).json({
         error: 'Image is required',
-        message: 'Please provide an image as base64 string in JSON or as file upload in multipart form',
+        message: 'Please provide an image as base64 string, image URL, or file upload in multipart form',
         branding: 'Powered by Plant Saathi AI'
       });
     }
