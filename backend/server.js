@@ -60,7 +60,34 @@ app.use(compression());
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL : '*',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // In development, allow all origins
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+    
+    // In production, allow specific domains
+    const allowedOrigins = [
+      'https://apinew4aug-p1vjd72zr-ranchopandas-projects.vercel.app',
+      'https://apinew4aug-18met8g4f-ranchopandas-projects.vercel.app',
+      'https://apinew4aug-hqa00jg4b-ranchopandas-projects.vercel.app'
+    ];
+    
+    // Also allow the FRONTEND_URL environment variable if set
+    if (process.env.FRONTEND_URL) {
+      allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
+    }
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   optionsSuccessStatus: 200,
   credentials: true
 };

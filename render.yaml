@@ -24,7 +24,7 @@ services:
       - key: R2_ENDPOINT
         sync: false
       - key: FRONTEND_URL
-        value: https://apinew4aug-p1vjd72zr-ranchopandas-projects.vercel.app/
+        value: https://apinew4aug-18met8g4f-ranchopandas-projects.vercel.app/
       - key: NODE_ENV
         value: production
       - key: LOG_LEVEL
