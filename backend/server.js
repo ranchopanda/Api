@@ -90,7 +90,7 @@ const pool = new Pool({
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   max: 5, // Reduced for free tier (was 20)
   idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
+  connectionTimeoutMillis: 10000, // Increased from 2000 to 10000 for cross-region latency
 });
 
 // Test database connection
