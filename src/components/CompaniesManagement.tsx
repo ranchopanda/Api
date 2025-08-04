@@ -36,6 +36,7 @@ export default function CompaniesManagement() {
     try {
       // Use the Render backend URL directly since environment variable might not be set
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://plant-saathi-api.onrender.com/api';
+      console.log('Fetching companies from:', apiBaseUrl);
       
       const response = await fetch(`${apiBaseUrl}/companies`, {
         headers: {
@@ -95,6 +96,8 @@ export default function CompaniesManagement() {
         : cleanData;
 
       console.log('Submitting company data:', body);
+      console.log('Using URL:', url);
+      console.log('Using method:', method);
 
       const response = await fetch(url, {
         method,
@@ -104,8 +107,12 @@ export default function CompaniesManagement() {
         body: JSON.stringify(body),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Error response:', errorData);
         throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
 
