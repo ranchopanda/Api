@@ -321,10 +321,20 @@ router.post('/', upload.single('image'), async (req, res) => {
 
       // Upload image to R2 (optional - skip if not configured)
       let imageUrl = null;
+      console.log('🔧 R2 Configuration check:');
+      console.log('  - R2_BUCKET_NAME:', process.env.R2_BUCKET_NAME ? 'Set' : 'Not set');
+      console.log('  - R2_ACCESS_KEY_ID:', process.env.R2_ACCESS_KEY_ID ? 'Set' : 'Not set');
+      console.log('  - R2_SECRET_ACCESS_KEY:', process.env.R2_SECRET_ACCESS_KEY ? 'Set' : 'Not set');
+      console.log('  - R2_ENDPOINT:', process.env.R2_ENDPOINT ? 'Set' : 'Not set');
+      
       if (process.env.R2_BUCKET_NAME && process.env.R2_ACCESS_KEY_ID && process.env.R2_SECRET_ACCESS_KEY) {
         try {
+          console.log('📤 Attempting R2 upload...');
           const imageBuffer = Buffer.from(processedImageData, 'base64');
           const imageName = `${company.id}/${Date.now()}.jpg`;
+          console.log('📁 Image name:', imageName);
+          console.log('📦 Bucket:', process.env.R2_BUCKET_NAME);
+          
           const uploadParams = {
             Bucket: process.env.R2_BUCKET_NAME,
             Key: imageName,
@@ -333,13 +343,14 @@ router.post('/', upload.single('image'), async (req, res) => {
           };
           const uploadResult = await s3.upload(uploadParams).promise();
           imageUrl = uploadResult.Location;
-          console.log('Image uploaded to R2:', imageUrl);
+          console.log('✅ Image uploaded to R2:', imageUrl);
         } catch (uploadError) {
-          console.error('R2 upload failed:', uploadError.message);
+          console.error('❌ R2 upload failed:', uploadError.message);
+          console.error('🔍 Upload error details:', uploadError);
           // Continue without image upload
         }
       } else {
-        console.log('R2 not configured, skipping image upload');
+        console.log('⚠️ R2 not configured, skipping image upload');
       }
 
       // Save analysis to database (with or without image URL)
@@ -355,7 +366,13 @@ router.post('/', upload.single('image'), async (req, res) => {
         cost: cost
       }, req);
 
-      res.json(analysisResult);
+      // Include image URL in response if available
+      const responseData = {
+        ...analysisResult,
+        image_url: imageUrl || null
+      };
+      
+      res.json(responseData);
 
     } catch (aiError) {
       console.error('Plant Saathi AI Analysis error:', aiError);
