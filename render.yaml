@@ -14,7 +14,7 @@ services:
       - key: JWT_SECRET
         sync: false
       - key: CRON_SECRET
-        generateValue: true
+        value: plant-saathi-cron-2024-SECRET
       - key: R2_ACCESS_KEY_ID
         value: 0e19f3ce11fba98f0fcce3ec137f317b
       - key: R2_SECRET_ACCESS_KEY
@@ -40,7 +40,7 @@ services:
     command: bash backend/cron.sh
     envVars:
       - key: CRON_SECRET
-        sync: false
+        value: plant-saathi-cron-2024-SECRET
 
 databases:
   - name: plant-saathi-db
