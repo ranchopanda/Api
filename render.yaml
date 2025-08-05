@@ -34,6 +34,15 @@ services:
     autoDeploy: true
     plan: free
 
+# Scheduled job to reset daily usage at midnight UTC
+type: cron
+name: reset-daily-usage
+schedule: "0 0 * * *"
+command: bash backend/cron.sh
+envVars:
+  - key: CRON_SECRET
+    sync: false
+
 databases:
   - name: plant-saathi-db
     databaseName: plant_saathi
